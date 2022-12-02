@@ -6,24 +6,23 @@ long num_step;
 double delta;
 long nb;
 double compute_pi(long lower, long upper) {
-    double sum = 0.0;
+    double sum[1] = {0.0};
     double x = 0.0;
-    double left = 0.0;
-    double right = 0.0;
    
     if((lower+nb) >= upper ) {
         for(long i=lower;i<upper;i++) {
             x = (lower+0.5) * delta;
-            sum += 4.0/(1+x*x) * delta;
+            sum[0] += 4.0/(1+x*x) * delta;
         }
-        return sum;
+        return sum[0];
     } 
     else {
-        right = cilk_spawn compute_pi(lower,(lower+upper)/2);
-        left = compute_pi((lower+upper)/2,upper);
+        double *left = sum;
+        double right = cilk_spawn compute_pi(lower,(lower+upper)/2);
+        *left = compute_pi((lower+upper)/2,upper);
         cilk_sync;
-        sum = left+right; // where is the reducer ?
-        return sum;
+        *left = *left+right; // where is the reducer ?
+        return sum[0];
     }
 }
 
