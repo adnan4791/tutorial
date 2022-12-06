@@ -11,7 +11,7 @@ double compute_pi(long lower, long upper) {
    
     if((lower+nb) >= upper ) {
         for(long i=lower;i<upper;i++) {
-            x = (lower+0.5) * delta;
+            x = (i+0.5) * delta;
             sum[0] += 4.0/(1+x*x) * delta;
         }
         return sum[0];
