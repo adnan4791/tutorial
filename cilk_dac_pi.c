@@ -21,7 +21,7 @@ double compute_pi(long lower, long upper) {
         double right = cilk_spawn compute_pi(lower,(lower+upper)/2);
         *left = compute_pi((lower+upper)/2,upper);
         cilk_sync;
-        *left = *left+right; // where is the reducer ?
+        *left = *left+right; 
         return sum[0];
     }
 }
